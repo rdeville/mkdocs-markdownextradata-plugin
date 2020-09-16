@@ -16,19 +16,13 @@ log.addFilter(warning_filter)
 
 CONFIG_KEYS = ["site_name", "site_author", "site_url", "repo_url", "repo_name"]
 
-if sys.version_info[0] >= 3:
-    str_type = str
-else:
-    str_type = mkdocs.utils.string_types
-
-
 class MarkdownExtraDataPlugin(BasePlugin):
     """
     Inject certain config variables into the markdown
     """
 
     config_scheme = (
-        ("data", mkdocs.config.config_options.Type(str_type, default=None)),
+        ("data", mkdocs.config.config_options.Type(list, default=None)),
     )
 
     def __add_data__(self, config, namespace, data):
@@ -42,17 +36,15 @@ class MarkdownExtraDataPlugin(BasePlugin):
             del namespace[0]
         holder[namespace[0]] = data
 
-    def on_pre_build(self, config, **kwargs):
+    def on_pre_build(self, config):
         # Loads all data from the supplied data directories
         # or, otherwise a _data directory next to mkdocs.yml and/or inside the docs_dir.
         # Does nothing if the dir does not exist.
 
         # assume an empty list if not defined
-        data_source_folders = self.config.get("data")
-        # cast as a list if is defined but is a string
-        if isinstance(data_source_folders, str):
-            data_source_folders = data_source_folders.split(',')
-
+        data_source_folders = list()
+        if self.config.get("data"):
+            data_source_folders = self.config.get("data")
         # if we have not value, then proceed to look in default folders
         # and assume a _data folder, add to list of folders to check
         if not data_source_folders:
