@@ -9,12 +9,12 @@
 ```
 As a user with variables that need to be inserted at the markdown level, not the template level.
 I need a mkdocs plugin that will inject my `extras` variables into the markdown template before it gets rendered to html.
-So that I can build my markdown pages with different values for images, urls, client_names, etc. 
+So that I can build my markdown pages with different values for images, urls, client_names, etc.
 ```
 
 ## Installation
 
-> **Note:** This package requires MkDocs version 0.17 or higher. 
+> **Note:** This package requires MkDocs version 0.17 or higher.
 
 Install the package with pip:
 
@@ -70,16 +70,19 @@ If the `extra: {}` hash is not enough for your data then you are able to make us
 plugins:
     - search
     - markdownextradata:
-        data: path/to/datafiles
+        data:
+         - path/to/datafiles
 ```
 
-or if you have multiple locations provide a comma (,) separated list of locations
+or if you have multiple locations provide more entries to the list of locations
 
 ```yaml
 plugins:
     - search
     - markdownextradata:
-        data: path/to/datafiles, another/path/to/datafiles
+        data:
+          - path/to/datafiles
+          - another/path/to/datafiles
 ```
 
 if you leave `markdownextradata.data` empty
